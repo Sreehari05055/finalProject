@@ -1,0 +1,134 @@
+@import url('/static/css/bulma.css');
+
+body{
+    background-color: #121212; /* Very dark black */
+}
+
+.glitch-container {
+    position: relative;
+    padding: 2rem;
+    background: #222;
+    border: 2px solid #05998c;
+    overflow: hidden;
+    box-shadow: 0px 0px 15px rgba(0, 255, 204, 1);
+}
+.glitch-input {
+    background: #333;
+    color: #ccc;
+    border: 2px solid #05998c;
+}
+.glitch-text {
+    color: #ffd700;
+    font-size: 1rem;
+    position: relative;
+}
+.box {
+    background-color: #333 !important; /* Darker box background */
+    color: #ccc !important; /* Light text inside the box */
+}
+
+
+
+.btn {
+    background-color: #636363;
+    color: #ffd700;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.btn:hover {
+    background-color: #05998c;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Slightly larger shadow */
+}
+.btn:active {
+    background-color: #014d4e; /* Even darker on click */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+    transform: translateY(1px); /* Slight press effect */
+}
+.submit-btn {
+            background-color: #636363;
+            color: #ffd700;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 10px;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+        }
+.chat-container {
+    flex-grow: 1 !important;
+    padding: 20px !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    background-color: #121212 !important;
+    border: 2px solid #05998c !important;
+    border-radius: 10px !important;
+    margin: 20px !important;
+    margin-bottom: 80px !important;
+    box-shadow: 0px 0px 15px rgba(0, 255, 204, 1);
+}
+/* Chat bubble styling */
+.chat-bubble {
+            padding: 15px;
+            border-radius: 15px;
+            max-width: 70%;
+            line-height: 1.4;
+}
+
+/* User bubble (align right) */
+.user-bubble {
+    background-color: #ffd700 !important;
+    color: #121212 !important;
+    align-self: flex-end !important;
+    text-align: right !important;
+    border-bottom-right-radius: 5px !important;
+}
+
+/* Bot bubble (align left) */
+.bot-bubble {
+    background-color: #ffd700 !important; /* Example bot color */
+    color: #121212 !important;
+    border-bottom-left-radius: 5px;
+    align-self: flex-start !important; /* Left-aligns the bot bubble */
+    text-align: left  !important;
+    margin-top: 20px  !important; /* Offset for positioning below the user message */
+    margin-bottom: 10px  !important;
+}
+.clear-chat-container {
+    position: fixed !important;
+    top: 0;
+    width: 100%;
+    display: flex;
+    padding: 10px 0;
+    justify-content: center;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+.clear-chat-button
+{
+
+            background-color: #ffd700;
+            color: #121212;
+            padding: 10px 20px;
+            border: 2px solid #ff0000;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 0px 15px rgba(255, 10,10, 1);
+            font-size: 16px;
+
+
+
+
+}

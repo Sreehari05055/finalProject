@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bulma.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+    <div class="hero is-fullheight">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="columns is-centered">
+                    <div class="column is-half">
+                        <!-- Login Form inside a box for styling -->
+                        <div class="box glitch-container">
+                            <h2 class="title is-3 glitch-text">Register</h2>
+
+          {% if messages %}
+            <div class="message-container">
+                {% for message in messages %}
+                    <div  class="notification is-success">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="field">
+                <label class="label" for="username" style="color: #d3d3d3;" >Username</label>
+                 <div class="control">
+                <input class="input glitch-input" type="text" id="username" name="username" required>
+                 </div>
+            </div>
+            <div class="field">
+                <label class="label" for="email" style="color: #d3d3d3;" >Email</label>
+                 <div class="control">
+                <input class="input glitch-input" type="email" id="email" name="email" required>
+                     </div>
+            </div>
+            <div class="field">
+                <label class="label" for="password1" style="color: #d3d3d3;" >Password</label>
+                 <div class="control">
+                <input class="input glitch-input" type="password" id="password1" name="password1" required>
+                 </div>
+            </div>
+            <div class="field">
+                <label  class="label" for="password2" style="color: #d3d3d3;" >Confirm Password</label>
+                 <div class="control">
+                <input class="input glitch-input" type="password" id="password2" name="password2" required>
+                 </div>
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+        <div class="form-footer">
+            <p>Already have an account? <a href="{% url 'login' %}" style="color:  #ffd700;">Login here</a></p>
+        </div>
+     </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

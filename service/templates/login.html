@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bulma.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="hero is-fullheight">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="columns is-centered">
+                    <div class="column is-half">
+                        <!-- Login Form inside a box for styling -->
+                        <div class="box glitch-container">
+                            <h2 class="title is-3 glitch-text" >Login</h2>
+
+          {% if messages %}
+            <div class="message-container">
+                {% for message in messages %}
+                    <div class="notification is-success">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="field">
+                <label class="label" for="username" style="color: #d3d3d3;">Username</label>
+                <div class="control">
+                <input class="input glitch-input" type="text" id="username" name="username" required>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="password" style="color: #d3d3d3;">Password</label>
+                <div class="control">
+                <input  class="input glitch-input" type="password" id="password" name="password" required>
+                </div>
+            </div>
+            <button class="btn" type="submit" >Login</button>
+        </form>
+        <div class="form-footer">
+            <p>Don't have an account? <a href="{% url 'register' %}" style="color:  #ffd700;" >Register here</a></p>
+        </div>
+        <a href="{% url 'password_reset' %}" style="color:  #ffd700; text-align: center; display: block; margin-top: 10px;">Forgot Password?</a>
+     </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
