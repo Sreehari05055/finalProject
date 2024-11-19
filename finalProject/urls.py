@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from service import views
 from service.views import CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetView
 

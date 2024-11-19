@@ -1,18 +1,16 @@
-import jsonify
 import openai
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
-from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.html import escape
 
 from finalProject import settings
 from service.forms import RegisterForm, LoginForm
-from service.models import ChatHistory
+from service.models import ChatHistory, CVStructure, CoverLetterStructure
 
 openai.api_key = settings.OPENAI_API_KEY
 
@@ -68,9 +66,38 @@ def login_user(request):
 def gpt_response(query):
     # Constructing a prompt using SQL data and user's query
     try:
+        sections = CVStructure.objects.all().order_by('order')
+
+        section_info = "\n".join([f"Position in CV: {section.order}\n"
+                                  f"Section: {section.section_name}\n"
+                                  f"Description: {section.description}\n"
+                                  f"Mandatory: {'Yes' if section.is_mandatory else 'No'}\n"
+                                  for section in sections])
+
+        cl_sections = CoverLetterStructure.objects.all().order_by('order')
+
+        cl_sec_info = "\n".join([f"Position in Cover Letter: {cl_section.order}\n"
+                                 f"Section: {cl_section.section_name}\n"
+                                 f"Description: {cl_section.description}\n"
+                                 f"Mandatory: {'Yes' if cl_section.is_mandatory else 'No'}\n"
+                                 for cl_section in cl_sections])
+
+        prompt = (
+            f"Based on the following information for CV's:\n{section_info},\n\n"
+            f"and based on the following information for Cover Letter's:\n{cl_sec_info}\n\n"
+            f"Answer the following query: {query}."
+            f"If the current question is a follow-up to the previous question, incorporate that context into your response, "
+            f"focusing on the previous question's content. Otherwise, provide a general response, based on the database."
+            f"Begin by mentioning any necessary conditions or requirements before proceeding. "
+            f"For each step, clearly describe the action and what the user should expect as a result of that step."
+            f"DON'T use formal terms like 'position', 'section name', 'description', 'mandatory' but ensure you cover all steps and outcomes in a natural way."
+            f"DO NOT use '*' or any other special characters to represent lists or points. Use full sentences or numbers instead."
+            f"If the user's question is irrelevant or outside the provided information, kindly apologize and ask if they need help with something else."
+        )
+
         messages = [
             {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": query}  # User's query
+            {"role": "user", "content": prompt}  # User's query
         ]
 
         # Sending the request to the v1/chat/completions endpoint
@@ -86,9 +113,11 @@ def gpt_response(query):
 
 
 def clear_chat(request):
-    if request == 'POST':
+    if request.method == 'POST':
         ChatHistory.objects.filter(user=request.user).delete()  # Remove chat history from the session
-        return redirect('homepage')
+        chat_history = ChatHistory.objects.filter(user=request.user)
+        return render(request, 'homepage.html', {'chat_history': chat_history})
+
     return redirect('homepage')
 
 
@@ -129,9 +158,9 @@ def register(request):
 
 
 class CustomPasswordResetView(PasswordResetView):
-    template_name = 'reset_password.html'  # Create this template
-    email_template_name = 'password_reset_instructions.txt'  # Create this template
-    subject_template_name = 'password_reset_subject.txt'  # Create this template
+    template_name = 'reset_password.html'  # Ensure this template exists
+    email_template_name = 'password_reset_instructions.txt'  # Ensure this template exists
+    subject_template_name = 'password_reset_subject.txt'  # Ensure this template exists
     success_url = '/password_reset/done/'
 
 

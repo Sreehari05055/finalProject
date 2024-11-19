@@ -2,42 +2,31 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>HR Dashboard</title>
+    <title>Home</title>
+
      {% load static %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/bulma.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bulma.css' %}?v=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.0">
 </head>
 <body>
 
 
 <div class="hero is-fullheight has-background-dark">
-    <div class="hero-head has-text-right">
 
-        <div class="dropdown is-hoverable is-right" style="padding: 20px;">
-            <div class="dropdown-trigger">
-                <button class="button is-rounded" aria-haspopup="true" aria-controls="dropdown-menu4" style="background-color: #ffd700; width: 40px; height: 40px; padding: 0;">
-                    <span class="icon is-small">
-                        <i class="fas fa-user" aria-hidden="true"></i>
-                    </span>
-                </button>
-            </div>
-            <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                <div class="dropdown-content">
-                    <a href="{% url 'login' %}" class="dropdown-item">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
- <div class="clear-chat-container">
-    <form method="POST" action="{% url 'clear_chat' %}">
+<div class="profile-container">
+    <button class="logout-button" onclick="window.location.href='{% url 'login' %}'">
+        Logout
+    </button>
+</div>
+<div class="is-flex is-justify-content-center is-align-items-flex-start">
+    <form id="clear-form" method="POST">
         {% csrf_token %}
-        <button type="submit" class="clear-chat-button">Clear Chat</button>
+        <button type="submit" class="button is-danger">Clear Chat</button>
     </form>
 </div>
- <div class="container" style="width: 80%; max-width: 90vw;">
-   <div id="chat-box" class="box chat-container"  style="height: 70vh; overflow-y: auto;" >
+   <div id="chat-box" class="box chat-container"  style="height: 50vh; overflow-y: auto;" >
        {% for chat in chat_history %}
            {% if chat.sender == 'user' %}
                <div class="chat-bubble user-bubble">{{ chat.message }}</div>
@@ -45,32 +34,16 @@
                <div class="chat-bubble bot-bubble">{{ chat.message|safe }}</div>
            {% endif %}
        {% endfor %}
+
+     <form method="POST" id="chat-form" class="input-form">
+  {% csrf_token %}
+      <input type="text" id="question" name="user_input" placeholder="Type your message......" required  oninput="toggleSubmitButton()">
+        <button type="submit" id="submit-btn" class="submit-btn">→</button>
+      </form>
     </div>
 
-  <div class="box glitch-container">
-      <form method="POST" class="field has-addons mt-3">
-  {% csrf_token %}
-    <div class="control is-expanded"  style="display: flex; align-items: center;">
-      <input class="input is-rounded" type="text" name="user_input" style="border: 2px solid #05998c;" placeholder="What is your music mood, genre, and preferred instruments?">
-        <button type="submit" class="submit-btn">→</button>
-  </div>
-      </form>
- </div>
-      </div>
 </div>
-<script>
-
-    window.onload = function() {
-    const chatBox = document.getElementById('chat-box');
-    chatBox.scrollTop = chatBox.scrollHeight;  // Scroll to the bottom on page load
-};
-
-// If you want to scroll to the bottom when a new message is added dynamically, use this:
-function scrollToBottom() {
-    const chatBox = document.getElementById('chat-box');
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-</script>
+<script>  const clearChatUrl = "{% url 'clear_chat' %}"; </script>
+ <script src="{% static 'javascript/homepage.js' %}" defer></script>
 </body>
 </html>

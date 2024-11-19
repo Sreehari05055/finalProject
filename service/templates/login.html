@@ -19,13 +19,15 @@
                         <div class="box glitch-container">
                             <h2 class="title is-3 glitch-text" >Login</h2>
 
+
           {% if messages %}
             <div class="message-container">
                 {% for message in messages %}
-                    <div class="notification is-success">{{ message }}</div>
+                    <div  class="notification is-danger">{{ message }}</div>
                 {% endfor %}
             </div>
         {% endif %}
+
 
         <form method="POST">
             {% csrf_token %}

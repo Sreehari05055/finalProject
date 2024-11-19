@@ -1,7 +1,7 @@
 @import url('/static/css/bulma.css');
 
 body{
-    background-color: #121212; /* Very dark black */
+    background-color: #121212;
 }
 
 .glitch-container {
@@ -23,12 +23,29 @@ body{
     position: relative;
 }
 .box {
-    background-color: #333 !important; /* Darker box background */
-    color: #ccc !important; /* Light text inside the box */
+    background-color: #333 !important;
+    color: #ccc !important;
 }
-
-
-
+.input-form{
+    display: flex;
+    align-items: center;
+    width: 96%;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    background-color: white;
+    padding: 5px;
+    position: fixed;
+    bottom: 20px;
+    box-sizing: border-box;
+}
+#question {
+    flex-grow: 1;
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 25px;
+    outline: none;
+}
 .btn {
     background-color: #636363;
     color: #ffd700;
@@ -46,89 +63,95 @@ body{
 }
 .btn:active {
     background-color: #014d4e; /* Even darker on click */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     transform: translateY(1px); /* Slight press effect */
 }
 .submit-btn {
-            background-color: #636363;
-            color: #ffd700;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left: 10px;
-            cursor: pointer;
-            outline: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            font-size: 18px;
-        }
+    background-color: #636363;
+    color: #ffd700;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
 .chat-container {
-    flex-grow: 1 !important;
-    padding: 20px !important;
-    overflow-y: auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;
-    background-color: #121212 !important;
-    border: 2px solid #05998c !important;
-    border-radius: 10px !important;
-    margin: 20px !important;
-    margin-bottom: 80px !important;
-    box-shadow: 0px 0px 15px rgba(0, 255, 204, 1);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;  /* Enables scrolling */
+    padding: 0 10px;
+    padding-bottom: 80px;
+    gap: 10px;
+    background-color: #fafafa;
+    border: 5px solid #ffd700;
+    border-radius: 10px;
+    margin: 10px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    justify-content: flex-start;
+    position: relative;
 }
 /* Chat bubble styling */
 .chat-bubble {
-            padding: 15px;
-            border-radius: 15px;
-            max-width: 70%;
-            line-height: 1.4;
+    padding: 15px;
+    margin: 5px;
+    border-radius: 15px;
+    max-width: 70%;
+    display: inline-block;
+    line-height: 1.4;
 }
 
 /* User bubble (align right) */
 .user-bubble {
-    background-color: #ffd700 !important;
-    color: #121212 !important;
-    align-self: flex-end !important;
-    text-align: right !important;
-    border-bottom-right-radius: 5px !important;
+    background-color: #05998c;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+    border-bottom-right-radius: 5px;
 }
 
 /* Bot bubble (align left) */
 .bot-bubble {
-    background-color: #ffd700 !important; /* Example bot color */
-    color: #121212 !important;
-    border-bottom-left-radius: 5px;
-    align-self: flex-start !important; /* Left-aligns the bot bubble */
-    text-align: left  !important;
-    margin-top: 20px  !important; /* Offset for positioning below the user message */
-    margin-bottom: 10px  !important;
+    background-color: #636363;
+    color: white;
+    align-self: flex-start;
 }
-.clear-chat-container {
-    position: fixed !important;
-    top: 0;
-    width: 100%;
-    display: flex;
-    padding: 10px 0;
-    justify-content: center;
-    z-index: 1000; /* Ensure it appears above other elements */
+
+.profile-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
-.clear-chat-button
-{
-
-            background-color: #ffd700;
-            color: #121212;
-            padding: 10px 20px;
-            border: 2px solid #ff0000;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0px 0px 15px rgba(255, 10,10, 1);
-            font-size: 16px;
-
-
-
-
+.logout-button {
+    background-color: #FF6347; /* Tomato color */
+    color: white;
+    font-size: 14px;
+    padding: 5px 15px; /* Reduced padding to make it smaller */
+    border: none;
+    border-radius: 20px;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+    width: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.logout-button:hover {
+    background-color: #FF4500;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Slightly larger shadow */
+}
+.logout-button:active {
+    background-color:  #FF5733; /* Even darker on click */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transform: translateY(1px); /* Slight press effect */
 }
