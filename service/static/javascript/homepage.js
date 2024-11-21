@@ -1,11 +1,6 @@
-
-    window.onload = function() {
     const chatBox = document.getElementById('chat-box');
-    chatBox.scrollTop = chatBox.scrollHeight;
-};
 
 function scrollToBottom() {
-    const chatBox = document.getElementById('chat-box');
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
@@ -28,22 +23,6 @@ function scrollToBottom() {
             }
         });
     });
-
-    function toggleDropdown() {
-            var dropdown = document.getElementById("dropdownMenu");
-            dropdown.classList.toggle("is-active");
-        }
-
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-             const dropdownMenu = document.getElementById("dropdownMenu");
-             const profileIcon = document.querySelector(".profile-icon");
-
-    // If the click is outside the dropdown and profile icon, close the dropdown
-    if (!dropdownMenu.contains(event.target) && !profileIcon.contains(event.target)) {
-        dropdownMenu.classList.remove("is-active");
-    }
-};
 
         function toggleSubmitButton() {
         const inputField = document.getElementById('question');

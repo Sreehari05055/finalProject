@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -16,14 +16,14 @@
 
 
 <div class="profile-container">
-    <button class="logout-button" onclick="window.location.href='{% url 'login' %}'">
+    <button class="logout-button"  onclick="if (confirm('Are you sure you want to Logout?')) { window.location.href = '{% url 'login' %}'; }">
         Logout
     </button>
 </div>
 <div class="is-flex is-justify-content-center is-align-items-flex-start">
     <form id="clear-form" method="POST">
         {% csrf_token %}
-        <button type="submit" class="button is-danger">Clear Chat</button>
+        <button type="submit" class="button is-danger"  onclick="return confirm('Are you sure you want to clear the chat?')">Clear Chat</button>
     </form>
 </div>
    <div id="chat-box" class="box chat-container"  style="height: 50vh; overflow-y: auto;" >
@@ -43,7 +43,8 @@
     </div>
 
 </div>
-<script>  const clearChatUrl = "{% url 'clear_chat' %}"; </script>
+<script>  const clearChatUrl = "{% url 'clear_chat' %}";
+</script>
  <script src="{% static 'javascript/homepage.js' %}" defer></script>
 </body>
 </html>
