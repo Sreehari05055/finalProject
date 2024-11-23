@@ -3,7 +3,9 @@
 body{
 background-color: #121212;
 }
-
+h2{
+    font-family: 'Roboto', sans-serif;
+}
 .glitch-container {
     position: relative;
     padding: 2rem;
@@ -115,6 +117,7 @@ background-color: #121212;
 
 /* User bubble (align right) */
 .user-bubble {
+    font-family: 'Open Sans', sans-serif;
     background-color: #6d7984;
     color: white;
     align-self: flex-end;
@@ -124,6 +127,7 @@ background-color: #121212;
 
 /* Bot bubble (align left) */
 .bot-bubble {
+    font-family: 'Open Sans', sans-serif;
     background-color: #636363;
     color: white;
     align-self: flex-start;
@@ -152,9 +156,9 @@ background-color: #121212;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Slightly larger shadow */
 }
 .logout-button:active {
-    background-color:  #FF5733; /* Even darker on click */
+    background-color:  #FF5733; /* darker on click */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-    transform: translateY(1px); /* Slight press effect */
+    transform: translateY(1px); /* press effect */
 }
 .custom-footer {
     background-color: #222;
