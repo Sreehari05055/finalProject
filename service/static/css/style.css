@@ -1,24 +1,24 @@
 @import url('/static/css/bulma.css');
 
 body{
-    background-color: #121212;
+background-color: #121212;
 }
 
 .glitch-container {
     position: relative;
     padding: 2rem;
     background: #222;
-    border: 2px solid #05998c;
+    border: 2px solid #232b33;
     overflow: hidden;
-    box-shadow: 0px 0px 15px rgba(0, 255, 204, 1);
+    box-shadow: 0px 0px 15px rgba(35, 43,51, 1);
 }
 .glitch-input {
     background: #333;
     color: #ccc;
-    border: 2px solid #05998c;
+    border: 2px solid #232b33;
 }
 .glitch-text {
-    color: #ffd700;
+    color: #aeb3b8;
     font-size: 1rem;
     position: relative;
 }
@@ -26,22 +26,40 @@ body{
     background-color: #333 !important;
     color: #ccc !important;
 }
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;  /* Enables scrolling */
+    padding: 0 10px;
+    padding-bottom: 80px;
+    gap: 10px;
+    background-color: #fafafa;
+    border: 5px solid  #232b33;
+    border-radius: 10px;
+    margin: 10px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    justify-content: flex-start;
+    position: relative;
+}
 .input-form{
     display: flex;
     align-items: center;
     width: 96%;
+    max-width: 100%;
     border: 1px solid #ccc;
     border-radius: 25px;
     background-color: white;
     padding: 5px;
     position: fixed;
-    bottom: 20px;
+    bottom: 75px;
     box-sizing: border-box;
 }
 #question {
     flex-grow: 1;
     border: none;
-    padding: 15px;
+   padding: 15px;
     font-size: 16px;
     border-radius: 25px;
     outline: none;
@@ -58,11 +76,11 @@ body{
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .btn:hover {
-    background-color: #05998c;
+    background-color: #232b33;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Slightly larger shadow */
 }
 .btn:active {
-    background-color: #014d4e; /* Even darker on click */
+    background-color: #6d7984; /* Even darker on click */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     transform: translateY(1px); /* Slight press effect */
 }
@@ -85,23 +103,6 @@ body{
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-.chat-container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    overflow-y: auto;  /* Enables scrolling */
-    padding: 0 10px;
-    padding-bottom: 80px;
-    gap: 10px;
-    background-color: #fafafa;
-    border: 5px solid #ffd700;
-    border-radius: 10px;
-    margin: 10px;
-    box-sizing: border-box;
-    overflow-x: hidden;
-    justify-content: flex-start;
-    position: relative;
-}
 /* Chat bubble styling */
 .chat-bubble {
     padding: 15px;
@@ -114,7 +115,7 @@ body{
 
 /* User bubble (align right) */
 .user-bubble {
-    background-color: #05998c;
+    background-color: #6d7984;
     color: white;
     align-self: flex-end;
     text-align: right;
@@ -154,4 +155,11 @@ body{
     background-color:  #FF5733; /* Even darker on click */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     transform: translateY(1px); /* Slight press effect */
+}
+.custom-footer {
+    background-color: #222;
+    color: #f0f3f5;
+    font-size: 15px;
+    padding: 10px 0;  /* Vertical padding */
+    text-align: center;
 }

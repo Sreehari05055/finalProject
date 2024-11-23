@@ -5,15 +5,10 @@
     <title>Home</title>
 
      {% load static %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/bulma.css' %}?v=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.0">
 </head>
-<body>
-
-
-<div class="hero is-fullheight has-background-dark">
-
+<body class="hero is-fullheight has-background-dark"  style="background-image: url('{% static 'images/img.jpg' %}'); background-size: cover; background-position: center center;">
 
 <div class="profile-container">
     <button class="logout-button"  onclick="if (confirm('Are you sure you want to Logout?')) { window.location.href = '{% url 'login' %}'; }">
@@ -23,7 +18,7 @@
 <div class="is-flex is-justify-content-center is-align-items-flex-start">
     <form id="clear-form" method="POST">
         {% csrf_token %}
-        <button type="submit" class="button is-danger"  onclick="return confirm('Are you sure you want to clear the chat?')">Clear Chat</button>
+        <button type="submit" class="button is-danger">Clear Chat</button>
     </form>
 </div>
    <div id="chat-box" class="box chat-container"  style="height: 50vh; overflow-y: auto;" >
@@ -37,14 +32,20 @@
 
      <form method="POST" id="chat-form" class="input-form">
   {% csrf_token %}
-      <input type="text" id="question" name="user_input" placeholder="Type your message......" required  oninput="toggleSubmitButton()">
+      <input type="text" id="question" name="user_input" placeholder="Ask any questions regarding your CV or cover letter..." required  oninput="toggleSubmitButton()">
         <button type="submit" id="submit-btn" class="submit-btn">→</button>
       </form>
     </div>
 
-</div>
+
 <script>  const clearChatUrl = "{% url 'clear_chat' %}";
 </script>
  <script src="{% static 'javascript/homepage.js' %}" defer></script>
+
+<footer class="footer custom-footer">
+  <div class="content has-text-centered">
+     <p>&copy; 2024 Django Project. All rights reserved.</p>
+  </div>
+</footer>
 </body>
 </html>

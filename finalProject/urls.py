@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from service import views
-from service.views import CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetView
+from service.views import CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetView,CustomPasswordResetCompleteView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +27,7 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='reset_password'),
     path('password_reset/', CustomPasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('password_reset/complete', CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('clear_chat/', views.clear_chat, name='clear_chat'),
 
 ]

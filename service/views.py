@@ -81,7 +81,6 @@ def gpt_response(query):
                                  f"Description: {cl_section.description}\n"
                                  f"Mandatory: {'Yes' if cl_section.is_mandatory else 'No'}\n"
                                  for cl_section in cl_sections])
-
         prompt = (
             f"Based on the following information for CV's:\n{section_info},\n\n"
             f"and based on the following information for Cover Letter's:\n{cl_sec_info}\n\n"
@@ -100,7 +99,6 @@ def gpt_response(query):
             {"role": "user", "content": prompt}  # User's query
         ]
 
-        # Sending the request to the v1/chat/completions endpoint
         resp = openai.ChatCompletion.create(
             model="gpt-4-turbo",  # Correct model name
             messages=messages,  # List of messages to pass to the model
@@ -108,6 +106,7 @@ def gpt_response(query):
             temperature=0.3
         )
         return resp['choices'][0]['message']['content'].strip()
+
     except Exception as e:
         return f"Error with GPT: {str(e)}"
 
@@ -170,12 +169,8 @@ class CustomPasswordResetDoneView(PasswordResetDoneView):
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'change_password.html'  # Ensure this template exists
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('password_reset_complete')
 
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'  # Ensure this template exists
-
-    def get(self, request, *args, **kwargs):
-        # Redirect to login page after displaying the template
-        return super().get(request, *args, **kwargs)

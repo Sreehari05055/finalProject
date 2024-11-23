@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/bulma.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
-    <div class="hero is-fullheight">
+<body class="hero is-fullheight" style="background-image: url('{% static 'images/img.jpg' %}'); background-size: cover; background-position: center center;">
         <div class="hero-body">
             <div class="container has-text-centered">
                 <div class="columns is-centered">
@@ -46,15 +45,22 @@
             <button class="btn" type="submit" >Login</button>
         </form>
         <div class="form-footer">
-            <p>Don't have an account? <a href="{% url 'register' %}" style="color:  #ffd700;" >Register here</a></p>
+            <p>Don't have an account? <a href="{% url 'register' %}" style="color:  #d4d8da;" >Register here</a></p>
         </div>
-        <a href="{% url 'password_reset' %}" style="color:  #ffd700; text-align: center; display: block; margin-top: 10px;">Forgot Password?</a>
+        <a href="{% url 'password_reset' %}" style="color:  #d4d8da; text-align: center; display: block; margin-top: 10px;">Forgot Password?</a>
      </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
+<footer class="footer custom-footer">
+  <div class="content has-text-centered">
+     <p>&copy; 2024 Django Project. All rights reserved.</p>
+      <p>Designed and developed by Sreehari Anukumar.</p>
+      <p> <a href="https://github.com/Sreehari05055/finalProject.git" target="_blank">View Source on GitHub</a> |
+          <a href="mailto:akc.sreehari@gmail.com">Contact Us</a>
+      </p>
+  </div>
+</footer>
 </body>
 </html>
