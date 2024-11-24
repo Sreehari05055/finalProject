@@ -1,4 +1,5 @@
 import openai
+from PyPDF2 import PdfReader
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -19,22 +20,52 @@ def home(request):
     try:
         if request.method == 'POST':
             user_input = request.POST.get('user_input')
+            uploaded_file = request.FILES.get("uploaded_file", None)
 
             formatted_user = escape(user_input)
             bot_response = response(formatted_user)
 
             formatted_resp = bot_response.replace("\n", "<br>")
 
-            ChatHistory.objects.create(
-                user=request.user,
-                message=formatted_user,
-                sender='user'
-            )
-            ChatHistory.objects.create(
-                user=request.user,
-                message=formatted_resp,
-                sender='bot'
-            )
+            if uploaded_file:
+                if uploaded_file.content_type == 'application/pdf':
+                    file_name = uploaded_file.name
+
+                    reader = PdfReader(uploaded_file)
+                    data = ""
+                    for page in reader.pages:
+                        data += page.extract_text() + "\n"
+
+                    response_var = f"CV or Cover Letter: {data}\n\n User Query: {user_input}"
+
+                    image_resp = response(response_var)
+
+                    formatted_image_resp = image_resp.replace("\n", "<br>")
+
+                    ChatHistory.objects.create(
+                        user=request.user,
+                        message=f"Uploaded file: {file_name}: \n\n"
+                                f"{formatted_user}",
+                        sender='user'
+                    )
+
+                    ChatHistory.objects.create(
+                        user=request.user,
+                        message=formatted_image_resp,
+                        sender='bot'
+                    )
+            else:
+
+                ChatHistory.objects.create(
+                    user=request.user,
+                    message=formatted_user,
+                    sender='user'
+                )
+                ChatHistory.objects.create(
+                    user=request.user,
+                    message=formatted_resp,
+                    sender='bot'
+                )
 
         chat_history = ChatHistory.objects.filter(user=request.user)
 
@@ -85,12 +116,13 @@ def gpt_response(query):
             f"Based on the following information for CV's:\n{section_info},\n\n"
             f"and based on the following information for Cover Letter's:\n{cl_sec_info}\n\n"
             f"Answer the following query: {query}."
+            f"If they have uploaded their CV or Cover Letter Analyze it and provide suggestions for improvement."
             f"If the current question is a follow-up to the previous question, incorporate that context into your response, "
             f"focusing on the previous question's content. Otherwise, provide a general response, based on the database."
             f"Begin by mentioning any necessary conditions or requirements before proceeding. "
             f"For each step, clearly describe the action and what the user should expect as a result of that step."
             f"DON'T use formal terms like 'position', 'section name', 'description', 'mandatory' but ensure you cover all steps and outcomes in a natural way."
-            f"DO NOT use '*' or any other special characters to represent lists or points. Use full sentences or numbers instead."
+            f"DO NOT USE '*' or any other special characters to represent lists or points. Use full sentences or numbers instead."
             f"If the user's question is irrelevant or outside the provided information, kindly apologize and ask if they need help with something else."
         )
 

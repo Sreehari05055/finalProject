@@ -22,6 +22,7 @@
     </form>
 </div>
    <div id="chat-box" class="box chat-container"  style="height: 50vh; overflow-y: auto;" >
+
        {% for chat in chat_history %}
            {% if chat.sender == 'user' %}
                <div class="chat-bubble user-bubble">{{ chat.message }}</div>
@@ -30,8 +31,14 @@
            {% endif %}
        {% endfor %}
 
-     <form method="POST" id="chat-form" class="input-form">
+     <form method="POST" id="chat-form" class="input-form" enctype="multipart/form-data">
   {% csrf_token %}
+         <div class="control">
+             <label  for="file-upload" class="button is-info is-outlined is-small" style="background-color: #6d7984; border: 1px solid #232b33; color: #f0f3f5">
+                <span class="icon is-small"><i class="fas fa-plus"></i></span>
+             </label>
+             <input type="file" id="file-upload" name="uploaded_file" accept=".pdf" style="display: none;" onchange="alert('File Uploaded Successfully');">
+             </div>
       <input type="text" id="question" name="user_input" placeholder="Ask any questions regarding your CV or cover letter..." required  oninput="toggleSubmitButton()">
         <button type="submit" id="submit-btn" class="submit-btn">→</button>
       </form>
