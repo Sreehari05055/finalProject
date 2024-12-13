@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Writing Companion</title>
+     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bulma.css' %}?v=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.0">
+</head>
+<body class="hero is-fullheight" style="background-color: #a3adb9;">
+            <div class="has-text-centered mt-6">
+               <a class="button is-large is-normal is-black  mr-3"  href="{% url 'login' %}">Login</a>
+
+                <a class="button is-large is-normal is-black  ml-3"  href="{% url 'register' %}" >Register</a>
+            </div>
+    <section class="hero-body">
+        <div class="container">
+            <div class="columns ">
+                <div class="column is-narrow">
+                    <aside class="menu" style="position: fixed; top: 37%; left: 5%;">
+                        <p class="menu-label" style="color: #000;">Navigation</p>
+                        <ul class="menu-list">
+                            <li><a href="#Overview"  >Overview</a></li>
+                            <li><a href="#how-it-works" >How It Works</a></li>
+                            <li><a href="#features" >Features</a></li>
+                        </ul>
+                    </aside>
+                </div>
+
+                 <div class="column is-flex is-justify-content-center is-align-items-center">
+                    <div id="content-box" class="box has-text-centered" style="width: 1200px; height: 600px; box-shadow: 8px 10px 12px rgba(0, 0, 0, 1);">
+                        <div id="Overview" class="content-section">
+                            <h1 class="title is-4 has-text-centered has-text-weight-bold" style="color: #d3d3d3;">Overview</h1>
+                            <ul>
+                            <li> <strong style="color: #d3d3d3;"> Welcome to the Application Writing Companion</strong></li>
+                             <li> Your ultimate tool for crafting professional and impactful Resume's and Cover Letters. Whether you're starting your career journey or aiming for the next big opportunity, our AI-powered platform simplifies the process of enhancing application materials tailored to your needs.</li>
+                            </ul>
+                        </div>
+                        <div id="how-it-works" class="content-section">
+                            <h1 class="title is-4 has-text-centered has-text-weight-bold " style="color: #d3d3d3;">How It Works</h1>
+                             <ul class="has-text-centered">
+                            <li class="has-text-centered">Our platform helps enhance the structure and clarity of your CV and cover letter. You can upload your CV or cover letter in PDF format to receive personalized feedback from the model</li>
+                             </ul>
+                        </div>
+                        <div id="features" class="content-section">
+                            <h1 class="title is-4 has-text-centered has-text-weight-bold" style="color: #d3d3d3;">Features</h1>
+                            <ul class="has-text-centered">
+                                 <li><strong style="color: #d3d3d3;">Powered by GPT-4 Turbo</strong></li>
+                                <img src="{% static 'images/gpt-4.webp' %}" alt="GPT-4 Turbo Logo" class="has-text-centered" style="width: 60%; height: 40%;" >
+                                <li>It is the engine behind our platform's ability to generate, analyze, and interact with content in a meaningful way.</li>
+                            </ul>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+    </section>
+
+
+
+<footer class="footer custom-footer">
+  <div class="content has-text-centered">
+     <p>&copy; 2024 Django Project. All rights reserved.</p>
+      <p>Designed and developed by Sreehari Anukumar.</p>
+      <p> <a href="https://github.com/Sreehari05055/finalProject.git" target="_blank">View Source on GitHub</a>
+      </p>
+  </div>
+</footer>
+</body>
+</html> 

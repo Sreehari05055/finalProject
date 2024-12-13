@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Page</title>
+
+     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bulma.css' %}?v=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.0">
+</head>
+<body class="hero is-fullheight"  style="background-color: #a3adb9;">
+
+    <nav class="navbar is-light">
+        <div class="navbar-menu">
+
+            <div class="navbar-end">
+                 <a class="navbar-item has-text-weight-bold" id="open-settings">Settings</a>
+                <a class="navbar-item has-text-weight-bold" onclick="if (confirm('Are you sure you want to Logout?')) { window.location.href = '{% url 'login' %}'; }">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="settings-popup" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h2 class="title is-4 has-text-centered" style="color: #d3d3d3;">Settings</h2>
+
+            <div class="is-flex is-justify-content-space-between">
+                <span>Clear chat</span>
+            <form id="clear-form" method="POST">
+                {% csrf_token %}
+            <button type="submit" class="button is-danger is-rounded clear-button">Clear</button>
+            </form>
+            </div>
+        </div>
+    </div>
+    <button class="modal-close is-large" id="close-settings" aria-label="close"></button>
+</div>
+
+
+   <div id="chat-box" class="box chat-container"  style="height: 50vh; overflow-y: auto;" >
+
+       {% for chat in chat_history %}
+           {% if chat.sender == 'user' %}
+               <div class="chat-bubble user-bubble">{{ chat.message }}</div>
+           {% elif chat.sender == 'bot' %}
+               <div class="chat-bubble bot-bubble">{{ chat.message|safe }}</div>
+           {% endif %}
+       {% endfor %}
+
+     <form method="POST" id="chat-form" class="input-form" enctype="multipart/form-data">
+  {% csrf_token %}
+         <div class="control">
+             <label for="file-upload" class="button is-info is-outlined is-small" style="background-color: #6d7984; color: #f0f3f5; border-radius: 50%; width: 40px; height: 40px; border: 1px solid #6d7984;">
+                <span class="icon is-small"><i class="fas fa-plus"></i></span>
+             </label>
+             <input type="file" id="file-upload" name="uploaded_file" accept=".pdf" style="display: none;" onchange="alert('File Uploaded Successfully');">
+             </div>
+     <textarea id="question" name="user_input" placeholder="Ask any questions regarding your CV or cover letter. To generate CV or cover letter mention 'generate' " required style="resize: none; width: 100%;" oninput="toggleSubmitButton()"></textarea>
+        <button type="submit" id="submit-btn" class="button is-info is-outlined is-small" style="background-color: #636363; color: #ffd700; border: none; border-radius: 50%; width: 40px; height: 40px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;">→</button>
+      </form>
+    </div>
+
+
+<footer class="footer custom-footer">
+  <div class="content has-text-centered">
+     <p>&copy 2024 Django Project. All rights reserved.</p>
+  </div>
+</footer>
+
+    <script> const clearChatUrl = "{% url 'clear_chat' %}";
+      const botResponseUrl = "{% url 'chat' %}";</script>
+ <script src="{% static 'javascript/homepage.js' %}" defer>
+ </script>
+</body>
+</html>

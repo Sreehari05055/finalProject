@@ -5,56 +5,69 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.html import escape
-
+from io import BytesIO
 from finalProject import settings
 from service.forms import RegisterForm, LoginForm
 from service.models import ChatHistory, CVStructure, CoverLetterStructure
+#from fpdf import FPDF
+import nltk
+nltk.download('punkt')
 
 openai.api_key = settings.OPENAI_API_KEY
 
 
-def home(request):
+def chat(request):
     try:
         if request.method == 'POST':
             user_input = request.POST.get('user_input')
             uploaded_file = request.FILES.get("uploaded_file", None)
-
             formatted_user = escape(user_input)
-            bot_response = response(formatted_user)
 
-            formatted_resp = bot_response.replace("\n", "<br>")
+            #if "generate" in user_input.lower():
+            #    bot_response = gpt_prompt(user_input)
+            #    return JsonResponse({'bot_response': bot_response})
 
             if uploaded_file:
                 if uploaded_file.content_type == 'application/pdf':
                     file_name = uploaded_file.name
 
-                    reader = PdfReader(uploaded_file)
+                    file_content = uploaded_file.read()
+                    file_to_pdf = BytesIO(file_content)
+
+                    reader = PdfReader(file_to_pdf)
                     data = ""
                     for page in reader.pages:
                         data += page.extract_text() + "\n"
 
                     response_var = f"CV or Cover Letter: {data}\n\n User Query: {user_input}"
 
-                    image_resp = response(response_var)
+                    #if "generate" in user_input.lower():
+                    #    bot_response = gpt_prompt(response_var)
+                    #    return JsonResponse({'bot_response': bot_response})
 
-                    formatted_image_resp = image_resp.replace("\n", "<br>")
+                    bot_response = response(response_var).replace("\n", "<br>")
 
                     ChatHistory.objects.create(
                         user=request.user,
-                        message=f"Uploaded file: {file_name}: \n\n"
-                                f"{formatted_user}",
+                        message=formatted_user,
                         sender='user'
                     )
 
                     ChatHistory.objects.create(
                         user=request.user,
-                        message=formatted_image_resp,
+                        message=bot_response,
                         sender='bot'
                     )
+                    return JsonResponse({'bot_response': bot_response})
+
             else:
+
+                formatted_user = escape(user_input)
+                bot_response = response(formatted_user).replace("\n", "<br>")
 
                 ChatHistory.objects.create(
                     user=request.user,
@@ -63,17 +76,23 @@ def home(request):
                 )
                 ChatHistory.objects.create(
                     user=request.user,
-                    message=formatted_resp,
+                    message=bot_response,
                     sender='bot'
                 )
 
+                return JsonResponse({'bot_response': bot_response})
+
         chat_history = ChatHistory.objects.filter(user=request.user)
 
-        return render(request, 'homepage.html', {'chat_history': chat_history})
+        return render(request, 'chat.html', {'chat_history': chat_history})
 
     except Exception as e:
         print(f"Error: {e}")
-        return render(request, 'homepage.html', {'chat_history': []})
+        return JsonResponse({'error': 'Something went wrong'}, status=500)
+
+
+def advert(request):
+    return render(request, 'advert.html')
 
 
 def login_user(request):
@@ -89,12 +108,12 @@ def login_user(request):
                 return redirect('login')
             else:
                 login(request, user)
-                return redirect('homepage')  # Redirect to a home page after login
+                return redirect('chat')  # Redirect to a home page after login
 
     return render(request, 'login.html', {'form': form})
 
 
-def gpt_response(query):
+def gpt_prompt(query):
     # Constructing a prompt using SQL data and user's query
     try:
         sections = CVStructure.objects.all().order_by('order')
@@ -112,20 +131,74 @@ def gpt_response(query):
                                  f"Description: {cl_section.description}\n"
                                  f"Mandatory: {'Yes' if cl_section.is_mandatory else 'No'}\n"
                                  for cl_section in cl_sections])
+
+        return gpt_generic_prompt(section_info, cl_sec_info, query)
+    except Exception as e:
+        return f"Error with GPT: {str(e)}"
+
+
+
+
+def gpt_generic_prompt(cv_info, cl_info, query):
+    try:
+        """if "generate" in query.lower():
+            prompt = (
+                f"Based on the following information for CV's:\n{cv_info},\n\n"
+                f"and based on the following information for Cover Letter's:\n{cl_info}\n\n"
+                f"Generate a CV or Cover Letter based on provided information and {query} with appropriate spacing. It should be completely professional and minimalistic."
+                f"EACH AND EVERY SECTION SHOULD BE MENTIONED CLEARLY"
+                f"DO NOT USE '*' or any other special characters to represent lists or points. Use full sentences or numbers instead."
+                f"When using numbers to represent points, write them with the number followed by a closing parenthesis and a space. Then write the corresponding point or statement."
+
+            )
+            raw_doc = chat_model(prompt)
+
+            key_sentence_pair = format_cv(raw_doc)
+
+            return key_sentence_pair
+            """
         prompt = (
-            f"Based on the following information for CV's:\n{section_info},\n\n"
-            f"and based on the following information for Cover Letter's:\n{cl_sec_info}\n\n"
+            f"Based on the following information for CV's:\n{cv_info},\n\n"
+            f"and based on the following information for Cover Letter's:\n{cl_info}\n\n"
             f"Answer the following query: {query}."
             f"If they have uploaded their CV or Cover Letter Analyze it and provide suggestions for improvement."
             f"If the current question is a follow-up to the previous question, incorporate that context into your response, "
             f"focusing on the previous question's content. Otherwise, provide a general response, based on the database."
-            f"Begin by mentioning any necessary conditions or requirements before proceeding. "
+            f"Begin by mentioning any necessary conditions or requirements before proceeding."
             f"For each step, clearly describe the action and what the user should expect as a result of that step."
             f"DON'T use formal terms like 'position', 'section name', 'description', 'mandatory' but ensure you cover all steps and outcomes in a natural way."
             f"DO NOT USE '*' or any other special characters to represent lists or points. Use full sentences or numbers instead."
+            f"When using numbers to represent points, write them with the number followed by a closing parenthesis and a space. Then write the corresponding point or statement."
             f"If the user's question is irrelevant or outside the provided information, kindly apologize and ask if they need help with something else."
         )
+        return chat_model(prompt)
+    except Exception as e:
+        return f"Error with GPT: {str(e)}"
 
+def format_cv(cv_text):
+
+    keywords = ["Professional Summary", "Education", "Relevant Work Experience", "Skills", "Projects", "Extra-Curricular Activities", "Interests", "References","Phone","Email","LinkedIn","GitHub"]
+
+    tokens = nltk.sent_tokenize(cv_text)
+
+    key_sentence_pair = {}
+    for keyword in keywords:
+        key_found = False
+        extracted_sentence = []
+        for sentence in tokens:
+            if key_found:
+                extracted_sentence.append(sentence)
+            if keyword in sentence:
+                key_found = True
+        key_sentence_pair[keyword] = " ".join(extracted_sentence)
+
+    for key,value in key_sentence_pair:
+        with open("gpt_response_form.txt", "w", encoding="utf-8") as file:
+            file.write(f"{key}:{value}")
+
+
+def chat_model(prompt):
+    try:
         messages = [
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt}  # User's query
@@ -147,14 +220,14 @@ def clear_chat(request):
     if request.method == 'POST':
         ChatHistory.objects.filter(user=request.user).delete()  # Remove chat history from the session
         chat_history = ChatHistory.objects.filter(user=request.user)
-        return render(request, 'homepage.html', {'chat_history': chat_history})
+        return render(request, 'chat.html', {'chat_history': chat_history})
 
-    return redirect('homepage')
+    return redirect('chat')
 
 
 def response(user_input):
     try:
-        question_response = gpt_response(user_input)  # Passes the question as parameter for the response method.
+        question_response = gpt_prompt(user_input)  # Passes the question as parameter for the response method.
 
         formatted_response = question_response.replace("\n",
                                                        "<br>")  # Replacing the new-line character with the HTML new-line character

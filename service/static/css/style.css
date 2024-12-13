@@ -34,7 +34,7 @@ h2{
     flex-grow: 1;
     overflow-y: auto;  /* Enables scrolling */
     padding: 0 10px;
-    padding-bottom: 80px;
+    padding-bottom: 100px;
     gap: 10px;
     background-color: #fafafa;
     border: 5px solid  #232b33;
@@ -48,7 +48,7 @@ h2{
 .input-form{
     display: flex;
     align-items: center;
-    width: 96%;
+    width: 75%;
     max-width: 100%;
     border: 1px solid #ccc;
     border-radius: 25px;
@@ -56,56 +56,27 @@ h2{
     padding: 5px;
     position: fixed;
     bottom: 75px;
+    left: 13%;
     box-sizing: border-box;
 }
 #question {
     flex-grow: 1;
     border: none;
-   padding: 15px;
+    padding: 15px;
     font-size: 16px;
     border-radius: 25px;
     outline: none;
 }
-.btn {
-    background-color: #636363;
-    color: #ffd700;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.btn:hover {
+.button:hover{
     background-color: #232b33;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Slightly larger shadow */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
-.btn:active {
+.button:active {
     background-color: #6d7984; /* Even darker on click */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     transform: translateY(1px); /* Slight press effect */
 }
-.submit-btn {
-    background-color: #636363;
-    color: #ffd700;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 10px;
-    cursor: pointer;
-    outline: none;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 18px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-/* Chat bubble styling */
+/* Chat bubble */
 .chat-bubble {
     padding: 15px;
     margin: 5px;
@@ -115,48 +86,33 @@ h2{
     line-height: 1.4;
 }
 
-/* User bubble (align right) */
+/* User bubble */
 .user-bubble {
     font-family: 'Open Sans', sans-serif;
     background-color: #6d7984;
     color: white;
-    align-self: flex-end;
-    text-align: right;
-    border-bottom-right-radius: 5px;
+    align-self: flex-end; /* aligned to the right */
 }
 
-/* Bot bubble (align left) */
+/* Bot bubble */
 .bot-bubble {
     font-family: 'Open Sans', sans-serif;
     background-color: #636363;
     color: white;
-    align-self: flex-start;
+    align-self: flex-start; /* aligned to the left */
 }
 
 .profile-container {
     position: absolute;
-    top: 10px;
+    top: 100px;
     right: 10px;
 }
-.logout-button {
-    background-color: #FF6347; /* Tomato color */
-    color: white;
-    font-size: 14px;
-    padding: 5px 15px; /* Reduced padding to make it smaller */
-    border: none;
-    border-radius: 20px;
-    text-align: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    cursor: pointer;
-    width: auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.logout-button:hover {
-    background-color: #FF4500;
+.clear-button:hover {
+    background-color: #ff4500;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Slightly larger shadow */
 }
-.logout-button:active {
-    background-color:  #FF5733; /* darker on click */
+.clear-button:active {
+    background-color:  #ff5733; /* darker on click */
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     transform: translateY(1px); /* press effect */
 }
@@ -164,6 +120,12 @@ h2{
     background-color: #222;
     color: #f0f3f5;
     font-size: 15px;
-    padding: 10px 0;  /* Vertical padding */
+    padding: 10px 0;  /* vertical padding */
     text-align: center;
+}
+.content-section {
+    display: none; /* Initially hide all sections */
+}
+.content-section:target {
+    display: block; /* Display targeted section */
 }

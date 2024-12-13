@@ -1,33 +1,109 @@
-     const submitButton = document.getElementById('submit-btn');
-     const chatForm = document.getElementById('chat-form')
-     const chatBox = document.getElementById('chat-box');
+    const submitButton = document.getElementById('submit-btn');
+    const chatForm = document.getElementById('chat-form')
+    const chatBox = document.getElementById('chat-box');
+    const inputField = document.getElementById('question');
+    const fileInput = document.getElementById('file-upload');
+    const openSettingsButton = document.getElementById('open-settings');
+    const closeSettingsButton = document.getElementById('close-settings');
+    const settingsPopup = document.getElementById('settings-popup');
+    const overview = document.getElementById('Overview');
 
-    window.onload = function() {
+    function scrollToBottom() {
     chatBox.scrollTop = chatBox.scrollHeight;
-};
+    }
 
-    document.getElementById('clear-form').addEventListener('submit', function(event) {
-        event.preventDefault();
 
-        fetch(clearChatUrl, {
+
+    function typeText(element, sentences, delay = 50) {
+        let sentenceIndex = 0; // Sentence index
+        function typeNextSentence() {
+            if (sentenceIndex < sentences.length) {
+                element.innerHTML += sentences[sentenceIndex] + ' '; // Add sentence with a line break
+                sentenceIndex++;
+                scrollToBottom();
+                setTimeout(typeNextSentence, delay); // delay before typing next sentence
+            }
+        }
+        typeNextSentence();
+    }
+
+
+
+
+     chatForm.addEventListener('submit', function(event) {
+     event.preventDefault(); // Prevent multiple submissions
+
+     if(submitButton.disabled) {
+        return;
+     }
+        submitButton.disabled = true;
+        submitButton.style.opacity = "0.5";
+        const userMessage = inputField.value.trim();
+
+        const formData = new FormData();
+
+        if (fileInput.files[0]) {
+        formData.append('uploaded_file', fileInput.files[0]);
+    }
+        if(userMessage || fileInput.files[0])
+        {
+         if ((fileInput.files[0]) && (userMessage)) {
+            const userBubble = document.createElement('div');
+            userBubble.classList.add('chat-bubble', 'user-bubble');
+            userBubble.textContent =`Uploaded file: ${fileInput.files[0].name}\n${userMessage}`
+            chatBox.appendChild(userBubble);
+            formData.append('user_input', `Uploaded file: ${fileInput.files[0].name}\n${userMessage}`);
+         }
+         else if (userMessage){
+            // Add user message to chat
+            const userBubble = document.createElement('div');
+            userBubble.classList.add('chat-bubble', 'user-bubble');
+            userBubble.textContent = userMessage;
+            chatBox.appendChild(userBubble);
+            formData.append('user_input', userMessage);
+         }
+            inputField.value = '';
+            fileInput.value = '';
+
+            fetch(botResponseUrl, {
             method: 'POST',
             headers: {
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value, // CSRF token for Django
             },
-            credentials: 'same-origin'
+              credentials: 'same-origin', // Include cookies for session management
+              body: formData
+            })
+             .then(response => response.json())
+            .then(data => {
+                const botBubble = document.createElement('div');
+                botBubble.classList.add('chat-bubble', 'bot-bubble');
+                chatBox.appendChild(botBubble);
+
+                // Split response into sentences for progressive typing
+                const sentences = data.bot_response.split('. ').map(sentence => sentence.trim()).filter(sentence => sentence);
+
+                // Typing effect
+                typeText(botBubble, sentences);
+
+                scrollToBottom();
+
         })
-        .then(response => {
-            if (response.ok) {
-               const chatBubbles = document.querySelectorAll('.chat-bubble');
-                chatBubbles.forEach(bubble => {
-                    bubble.remove();  // This will remove each chat bubble
-                });
-            }
-        });
+        .catch(error => {
+                console.error('Error fetching bot response:', error);
+            }).finally(() => {
+
+            // enable submit button after the response is processed
+            submitButton.style.opacity = "1";
+            submitButton.disabled = false;
+
+             });
+        }
     });
 
+
+
+
         function toggleSubmitButton() {
-        const inputField = document.getElementById('question');
 
         // Show the submit button only if there's input in the field
         if (inputField.value.trim() !== "") {
@@ -41,30 +117,42 @@
         }
     }
 
-     chatForm.addEventListener('submit', function(event) {
-      if(submitButton.disabled) {
-       event.preventDefault(); // Prevent multiple submissions
-        return;
-      }
-        submitButton.disabled = true;
-        submitButton.style.opacity = "0.5";
 
+
+
+// Open modal when settings button is clicked
+openSettingsButton.addEventListener('click', () => {
+    settingsPopup.classList.add('is-active');
 });
 
-function toggleClearButton()
-{
-    const clearFormButton = document.getElementById("clear-form");
+// Close modal when the close button is clicked
+closeSettingsButton.addEventListener('click', () => {
+    settingsPopup.classList.remove('is-active');
+});
 
-    if (chatBox.innerHTML.trim() !== "")
-    {
-        clearFormButton.style.opacity = "1";
-        clearFormButton.style.visibility = "visible";
-    }
-    else
-    {
-            clearFormButton.style.opacity = "0";
-            clearFormButton.style.visibility = "hidden";
-    }
-}
+// Close the modal when clicking outside of it
+settingsPopup.querySelector('.modal-background').addEventListener('click', () => {
+    settingsPopup.classList.remove('is-active');
+});
 
-toggleClearButton();
+
+
+document.getElementById('clear-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    fetch(clearChatUrl, {
+       method: 'POST',
+       headers: {
+       'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+       },
+       credentials: 'same-origin'
+    })
+    .then(response => {
+            if (response.ok) {
+                const chatBubbles = document.querySelectorAll('.chat-bubble');
+                chatBubbles.forEach(bubble => {
+                bubble.remove();  // This will remove each chat bubble
+                });
+            }
+       });
+});

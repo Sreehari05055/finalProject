@@ -17,13 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from service import views
-from service.views import CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetView,CustomPasswordResetCompleteView
+from service.views import CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetView, \
+    CustomPasswordResetCompleteView
 
 urlpatterns = [
+    path('login/', views.login_user, name='login'),
     path('admin/', admin.site.urls),
-    path('home/', views.home, name='homepage'),
-    path('', views.login_user, name='login'),
-    path('register/',views.register,name='register'),
+    path('chat/', views.chat, name='chat'),
+    path('', views.advert, name='advert'),
+    path('register/', views.register, name='register'),
     path('reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='reset_password'),
     path('password_reset/', CustomPasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
