@@ -13,9 +13,6 @@ from io import BytesIO
 from finalProject import settings
 from service.forms import RegisterForm, LoginForm
 from service.models import ChatHistory, CVStructure, CoverLetterStructure
-import nltk
-
-nltk.download('punkt')
 
 openai.api_key = settings.OPENAI_API_KEY
 
@@ -29,7 +26,6 @@ def chat(request):
 
             if uploaded_file:
                 if uploaded_file.content_type == 'application/pdf':
-                    file_name = uploaded_file.name
 
                     file_content = uploaded_file.read()
                     file_to_pdf = BytesIO(file_content)
