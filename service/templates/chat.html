@@ -11,6 +11,11 @@
 <body class="hero is-fullheight"  style="background-color: #a3adb9;">
 
     <nav class="navbar is-light">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#">
+                 <img src="{% static 'images/logo-transparent-png.png' %}" alt="SA" class="brand-logo">
+            </a>
+        </div>
         <div class="navbar-menu">
 
             <div class="navbar-end">
@@ -57,7 +62,7 @@
              </label>
              <input type="file" id="file-upload" name="uploaded_file" accept=".pdf" style="display: none;" onchange="alert('File Uploaded Successfully');">
              </div>
-     <textarea id="question" name="user_input" placeholder="Ask any questions regarding your CV or cover letter. To generate CV or cover letter mention 'generate' " required style="resize: none; width: 100%;" oninput="toggleSubmitButton()"></textarea>
+     <textarea id="question" name="user_input" placeholder="Ask any questions regarding your CV or cover letter." required style="resize: none; width: 100%;" oninput="toggleSubmitButton()"></textarea>
         <button type="submit" id="submit-btn" class="button is-info is-outlined is-small" style="background-color: #636363; color: #ffd700; border: none; border-radius: 50%; width: 40px; height: 40px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;">→</button>
       </form>
     </div>
@@ -65,7 +70,7 @@
 
 <footer class="footer custom-footer">
   <div class="content has-text-centered">
-     <p>&copy 2024 Django Project. All rights reserved.</p>
+     <p>&copy 2024 SA. All rights reserved.</p>
   </div>
 </footer>
 

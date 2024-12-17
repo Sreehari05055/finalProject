@@ -140,7 +140,6 @@ def gpt_generic_prompt(cv_info, cl_info, query):
             f"focusing on the previous question's content. Otherwise, provide a general response, based on the database."
             f"Begin by mentioning any necessary conditions or requirements before proceeding."
             f"For each step, clearly describe the action and what the user should expect as a result of that step."
-
         )
         return chat_model(prompt)
     except Exception as e:

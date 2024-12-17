@@ -129,3 +129,9 @@ h2{
 .content-section:target {
     display: block; /* Display targeted section */
 }
+.brand-logo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
